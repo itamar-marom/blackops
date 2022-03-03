@@ -31,9 +31,9 @@ var cfgFile string
 var rootCmd = &cobra.Command{
 	Use:   "blackops",
 	Short: "Blackops is an internal developer platform tool.",
-	Long: `Blackops is an internal developer platform tool,
-  to help developers easily manage application's ecosystem without the need for infra and platform teams.
-  Blackops does it in a gitops way using kubernetes CRD's which means it assumes you use a gitops tool such as ArgoCD or FluxCD.`,
+	Long: `Blackops is an internal developer platform tool.
+It helps developers manage application's ecosystem easily without the need for infra and platform teams.
+Blackops does it in a gitops way using kubernetes CRD's which means it assumes you use a gitops tool such as ArgoCD or FluxCD.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
