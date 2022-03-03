@@ -24,11 +24,8 @@ import (
 // createCmd represents the create command
 var createCmd = &cobra.Command{
 	Use:   "create",
-	Short: "create a resource",
-	Long: `For example:
-	blackops create application [NAME] [Flags]
-	blackops create repository [NAME] [Flags]
-	blackops create manifest [NAME] [Flags]`,
+	Short: "Creates a resource",
+	Long:  `Creates a resource`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("create called")
 	},

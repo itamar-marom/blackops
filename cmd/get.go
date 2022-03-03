@@ -24,11 +24,8 @@ import (
 // getCmd represents the get command
 var getCmd = &cobra.Command{
 	Use:   "get",
-	Short: "get a resource",
-	Long: `For example:
-	blackops get application
-	blackops get repository
-	blackops get pipeline`,
+	Short: "Gets a resource",
+	Long:  `Gets a resource from a given repository (or a repository itself)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("get called")
 	},
