@@ -17,38 +17,38 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
 
-// applicationCmd represents the application command
-var applicationCmd = &cobra.Command{
-	Use:   "application",
-	Short: "application",
-	Long:  `application definition in a given repository`,
+// createRepositoryCmd represents the createRepository command
+var createRepositoryCmd = &cobra.Command{
+	Use:   "repository <name>",
+	Short: "Create a repository definition",
+	Long:  `Create a repository definition in cache -> ~/.blackops`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("application called")
+		fmt.Println("createRepository called")
+		fmt.Println("Here are the arguments of card command: " + strings.Join(args, ","))
 	},
 }
 
 func init() {
-	getCmd.AddCommand(applicationCmd)
-	deleteCmd.AddCommand(applicationCmd)
-	createCmd.AddCommand(applicationCmd)
+	createRepositoryCmd.PersistentFlags().StringP("url", "u", "", "URL of the repository")
+	createRepositoryCmd.PersistentFlags().StringP("token", "t", "", "Token for the repository")
 
-	applicationCmd.PersistentFlags().StringP("repository", "r", "", "repository for application ecosystem")
-	applicationCmd.PersistentFlags().StringP("properties", "p", "", "properties file for this application")
+	createRepositoryCmd.MarkPersistentFlagRequired("url")
+	createRepositoryCmd.MarkPersistentFlagRequired("token")
 
-	applicationCmd.MarkPersistentFlagRequired("repository")
-	applicationCmd.MarkPersistentFlagRequired("properties")
+	createCmd.AddCommand(createRepositoryCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// applicationCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// createRepositoryCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// applicationCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// createRepositoryCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

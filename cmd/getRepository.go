@@ -21,34 +21,26 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// applicationCmd represents the application command
-var applicationCmd = &cobra.Command{
-	Use:   "application",
-	Short: "application",
-	Long:  `application definition in a given repository`,
+// getRepositoryCmd represents the getRepository command
+var getRepositoryCmd = &cobra.Command{
+	Use:   "repository <name>",
+	Short: "Get a repository definition",
+	Long:  `Get a repository definition in cache -> ~/.blackops`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("application called")
+		fmt.Println("getRepository called")
 	},
 }
 
 func init() {
-	getCmd.AddCommand(applicationCmd)
-	deleteCmd.AddCommand(applicationCmd)
-	createCmd.AddCommand(applicationCmd)
-
-	applicationCmd.PersistentFlags().StringP("repository", "r", "", "repository for application ecosystem")
-	applicationCmd.PersistentFlags().StringP("properties", "p", "", "properties file for this application")
-
-	applicationCmd.MarkPersistentFlagRequired("repository")
-	applicationCmd.MarkPersistentFlagRequired("properties")
+	rootCmd.AddCommand(getRepositoryCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// applicationCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// getRepositoryCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// applicationCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// getRepositoryCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

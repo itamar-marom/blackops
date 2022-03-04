@@ -24,8 +24,8 @@ import (
 // pipelineCmd represents the pipeline command
 var pipelineCmd = &cobra.Command{
 	Use:   "pipeline",
-	Short: "Creates a pipeline",
-	Long:  `Creates a pipline definition for a specific application in a given repository`,
+	Short: "pipeline",
+	Long:  `pipline definition for a specific application in a given repository`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("pipeline called")
 	},
