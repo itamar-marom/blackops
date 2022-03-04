@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 Itamar marom <marom.itamar@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,13 +25,17 @@ import (
 var deleteApplicationCmd = &cobra.Command{
 	Use:   "application <name>",
 	Short: "Delete an application",
-	Long:  `Delete an application definition in a given repository`,
+	Long:  `Delete an application definition from a given repository`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("deleteApplication called")
 	},
 }
 
 func init() {
+	deleteApplicationCmd.PersistentFlags().StringP("repository", "r", "", "repository for application ecosystem")
+
+	deleteApplicationCmd.MarkPersistentFlagRequired("repository")
+
 	deleteCmd.AddCommand(deleteApplicationCmd)
 
 	// Here you will define your flags and configuration settings.

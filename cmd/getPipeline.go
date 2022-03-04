@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 Itamar marom <marom.itamar@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,13 +25,19 @@ import (
 var getPipelineCmd = &cobra.Command{
 	Use:   "pipeline <name>",
 	Short: "Get a pipeline",
-	Long:  `Get a pipline definition for a specific application and a provider`,
+	Long:  `Get a pipline definition from a specific application and a provider`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("getPipeline called")
 	},
 }
 
 func init() {
+	getPipelineCmd.PersistentFlags().StringP("application", "a", "", "application to be part of")
+	getPipelineCmd.PersistentFlags().StringP("provider", "p", "", "provider to create from")
+
+	getPipelineCmd.MarkPersistentFlagRequired("application")
+	getPipelineCmd.MarkPersistentFlagRequired("provider")
+
 	getCmd.AddCommand(getPipelineCmd)
 
 	// Here you will define your flags and configuration settings.

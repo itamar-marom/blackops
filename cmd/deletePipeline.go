@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 Itamar marom <marom.itamar@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,13 +25,19 @@ import (
 var deletePipelineCmd = &cobra.Command{
 	Use:   "pipeline <name>",
 	Short: "Delete a pipeline",
-	Long:  `Delete a pipline definition for a specific application and a provider`,
+	Long:  `Delete a pipline definition from a specific application and a provider`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("deletePipeline called")
 	},
 }
 
 func init() {
+	deletePipelineCmd.PersistentFlags().StringP("application", "a", "", "application to be part of")
+	deletePipelineCmd.PersistentFlags().StringP("provider", "p", "", "provider to create from")
+
+	deletePipelineCmd.MarkPersistentFlagRequired("application")
+	deletePipelineCmd.MarkPersistentFlagRequired("provider")
+
 	deleteCmd.AddCommand(deletePipelineCmd)
 
 	// Here you will define your flags and configuration settings.

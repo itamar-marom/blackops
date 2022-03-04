@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 Itamar marom <marom.itamar@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,13 +25,17 @@ import (
 var getApplicationCmd = &cobra.Command{
 	Use:   "application <name>",
 	Short: "Get an application",
-	Long:  `Get an application definition`,
+	Long:  `Get an application definition from a specific repository`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("getApplication called")
 	},
 }
 
 func init() {
+	getApplicationCmd.PersistentFlags().StringP("repository", "r", "", "repository for application ecosystem")
+
+	getApplicationCmd.MarkPersistentFlagRequired("repository")
+
 	getCmd.AddCommand(getApplicationCmd)
 
 	// Here you will define your flags and configuration settings.

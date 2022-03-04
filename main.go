@@ -15,8 +15,12 @@ limitations under the License.
 */
 package main
 
-import "github.com/itamar-marom/blackops/cmd"
+import (
+	"github.com/itamar-marom/blackops/cmd"
+	"github.com/itamar-marom/blackops/utils"
+)
 
 func main() {
-  cmd.Execute()
+	utils.CreateConfigFile()
+	cmd.Execute()
 }

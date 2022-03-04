@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 Itamar marom <marom.itamar@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,9 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-	"strings"
-
+	"github.com/itamar-marom/blackops/models"
 	"github.com/spf13/cobra"
 )
 
@@ -28,8 +26,11 @@ var createRepositoryCmd = &cobra.Command{
 	Short: "Create a repository definition",
 	Long:  `Create a repository definition in cache -> ~/.blackops`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("createRepository called")
-		fmt.Println("Here are the arguments of card command: " + strings.Join(args, ","))
+		newRepository := new(models.Repository)
+		newRepository.Name = args[0]
+		newRepository.URL, _ = cmd.Flags().GetString("url")
+		newRepository.Token, _ = cmd.Flags().GetString("token")
+		models.AddNewRepository(*newRepository)
 	},
 }
 

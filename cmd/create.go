@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 Itamar marom <marom.itamar@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import (
 var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "Creates a resource",
-	Long:  `Creates a resource`,
+	Long:  `Creates a resource in a given repository (or a repository itself)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("create called")
 	},
