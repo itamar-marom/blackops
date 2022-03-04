@@ -32,7 +32,7 @@ var getRepositoryCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(getRepositoryCmd)
+	getCmd.AddCommand(getRepositoryCmd)
 
 	// Here you will define your flags and configuration settings.
 

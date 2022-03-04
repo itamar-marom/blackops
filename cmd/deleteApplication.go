@@ -21,26 +21,26 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// deleteRepositoryCmd represents the deleteRepository command
-var deleteRepositoryCmd = &cobra.Command{
-	Use:   "repository <name>",
-	Short: "Delete a repository definition",
-	Long:  `Delete a repository definition in cache -> ~/.blackops`,
+// deleteApplicationCmd represents the deleteApplication command
+var deleteApplicationCmd = &cobra.Command{
+	Use:   "application <name>",
+	Short: "Delete an application",
+	Long:  `Delete an application definition in a given repository`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("deleteRepository called")
+		fmt.Println("deleteApplication called")
 	},
 }
 
 func init() {
-	deleteCmd.AddCommand(deleteRepositoryCmd)
+	deleteCmd.AddCommand(deleteApplicationCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// deleteRepositoryCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// deleteApplicationCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// deleteRepositoryCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// deleteApplicationCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

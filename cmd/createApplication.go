@@ -21,34 +21,32 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// applicationCmd represents the application command
-var applicationCmd = &cobra.Command{
-	Use:   "application",
-	Short: "application",
-	Long:  `application definition in a given repository`,
+// createApplicationCmd represents the createApplication command
+var createApplicationCmd = &cobra.Command{
+	Use:   "application <name>",
+	Short: "Create an application",
+	Long:  `Create an application definition in a given repository`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("application called")
+		fmt.Println("createApplication called")
 	},
 }
 
 func init() {
-	getCmd.AddCommand(applicationCmd)
-	deleteCmd.AddCommand(applicationCmd)
-	createCmd.AddCommand(applicationCmd)
+	createApplicationCmd.PersistentFlags().StringP("repository", "r", "", "repository for application ecosystem")
+	createApplicationCmd.PersistentFlags().StringP("properties", "p", "", "properties file for this application")
 
-	applicationCmd.PersistentFlags().StringP("repository", "r", "", "repository for application ecosystem")
-	applicationCmd.PersistentFlags().StringP("properties", "p", "", "properties file for this application")
+	createApplicationCmd.MarkPersistentFlagRequired("repository")
+	createApplicationCmd.MarkPersistentFlagRequired("properties")
 
-	applicationCmd.MarkPersistentFlagRequired("repository")
-	applicationCmd.MarkPersistentFlagRequired("properties")
+	createCmd.AddCommand(createApplicationCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// applicationCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// createApplicationCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// applicationCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// createApplicationCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
