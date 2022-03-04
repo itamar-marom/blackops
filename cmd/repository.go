@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -28,6 +29,7 @@ var repositoryCmd = &cobra.Command{
 	Long:  `Creates a repository definition in cache -> ~/.blackops`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("repository called")
+		fmt.Println("Here are the arguments of card command : " + strings.Join(args, ","))
 	},
 }
 
@@ -35,6 +37,12 @@ func init() {
 	getCmd.AddCommand(repositoryCmd)
 	createCmd.AddCommand(repositoryCmd)
 	deleteCmd.AddCommand(repositoryCmd)
+
+	repositoryCmd.PersistentFlags().StringP("url", "u", "", "URL of the repository")
+	repositoryCmd.PersistentFlags().StringP("token", "t", "", "Token for the repository")
+
+	repositoryCmd.MarkPersistentFlagRequired("url")
+	repositoryCmd.MarkPersistentFlagRequired("token")
 
 	// Here you will define your flags and configuration settings.
 

@@ -33,8 +33,14 @@ var applicationCmd = &cobra.Command{
 
 func init() {
 	getCmd.AddCommand(applicationCmd)
-	createCmd.AddCommand(applicationCmd)
 	deleteCmd.AddCommand(applicationCmd)
+	createCmd.AddCommand(applicationCmd)
+
+	applicationCmd.PersistentFlags().StringP("repository", "r", "", "repository for application ecosystem")
+	applicationCmd.PersistentFlags().StringP("properties", "p", "", "properties file for this application")
+
+	applicationCmd.MarkPersistentFlagRequired("repository")
+	applicationCmd.MarkPersistentFlagRequired("properties")
 
 	// Here you will define your flags and configuration settings.
 

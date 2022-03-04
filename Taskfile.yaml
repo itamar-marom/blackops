@@ -11,6 +11,7 @@ tasks:
         cmds:
         - GOFLAGS=-mod=mod go run main.go
         - GOFLAGS=-mod=mod go run main.go get --help
+        - GOFLAGS=-mod=mod go run main.go create application
 
     # clean:
     #     desc: Remove all retrieved *.png files

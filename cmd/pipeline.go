@@ -36,6 +36,12 @@ func init() {
 	createCmd.AddCommand(pipelineCmd)
 	deleteCmd.AddCommand(pipelineCmd)
 
+	pipelineCmd.PersistentFlags().StringP("application", "a", "", "application to be part of")
+	pipelineCmd.PersistentFlags().StringP("api-resource", "r", "", "api-resource to create from")
+
+	pipelineCmd.MarkPersistentFlagRequired("application")
+	pipelineCmd.MarkPersistentFlagRequired("api-resource")
+
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
