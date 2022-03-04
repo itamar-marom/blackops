@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"io/ioutil"
 
 	"github.com/itamar-marom/blackops/utils"
@@ -31,21 +32,40 @@ func GetConfig() map[string][]Repository {
 	return config
 }
 
+func GetRepository(name string) (Repository, error) {
+	config := GetConfig()
+	repositories := config["repositories"]
+
+	for _, repository := range repositories {
+		if name == repository.Name {
+			return repository, nil
+		}
+	}
+
+	return Repository{}, fmt.Errorf("Repository does not exists")
+}
+
 func AddNewRepository(newRepository Repository) {
 	config_file_path := utils.GetConfigFilePath()
 	config := GetConfig()
-	config["repositories"] = append(config["repositories"], newRepository)
 
-	newConfig, err := yaml.Marshal(&config)
-	if err != nil {
-		println(err.Error())
-	}
-
-	err = ioutil.WriteFile(config_file_path, newConfig, 0)
-
-	if err != nil {
-		println(err.Error())
+	repo, _ := GetRepository(newRepository.Name)
+	if repo.Name == newRepository.Name {
+		println("Repository already exists")
 	} else {
-		println("Repository " + newRepository.Name + " has been added")
+		config["repositories"] = append(config["repositories"], newRepository)
+
+		newConfig, err := yaml.Marshal(&config)
+		if err != nil {
+			println(err.Error())
+		}
+
+		err = ioutil.WriteFile(config_file_path, newConfig, 0)
+
+		if err != nil {
+			println(err.Error())
+		} else {
+			println("Repository " + newRepository.Name + " has been added")
+		}
 	}
 }
