@@ -26,7 +26,7 @@ var getRepositoryCmd = &cobra.Command{
 	Short: "Get a repository definition",
 	Long:  `Get a repository definition in cache -> ~/.blackops`,
 	Run: func(cmd *cobra.Command, args []string) {
-		repository, err := models.GetRepository(args[0])
+		repository, _, err := models.GetRepository(args[0])
 		if err != nil {
 			println(err.Error())
 		} else {

@@ -32,24 +32,24 @@ func GetConfig() map[string][]Repository {
 	return config
 }
 
-func GetRepository(name string) (Repository, error) {
+func GetRepository(name string) (Repository, int, error) {
 	config := GetConfig()
 	repositories := config["repositories"]
 
-	for _, repository := range repositories {
+	for index, repository := range repositories {
 		if name == repository.Name {
-			return repository, nil
+			return repository, index, nil
 		}
 	}
 
-	return Repository{}, fmt.Errorf("Repository does not exists")
+	return Repository{}, 0, fmt.Errorf("Repository does not exists")
 }
 
-func AddNewRepository(newRepository Repository) {
+func AddRepository(newRepository Repository) {
 	config_file_path := utils.GetConfigFilePath()
 	config := GetConfig()
 
-	repo, _ := GetRepository(newRepository.Name)
+	repo, _, _ := GetRepository(newRepository.Name)
 	if repo.Name == newRepository.Name {
 		println("Repository already exists")
 	} else {
@@ -67,5 +67,30 @@ func AddNewRepository(newRepository Repository) {
 		} else {
 			println("Repository " + newRepository.Name + " has been added")
 		}
+	}
+}
+
+func DeleteRepository(repositoryName string) {
+	repo, index, _ := GetRepository(repositoryName)
+	if repo.Name == repositoryName {
+		config_file_path := utils.GetConfigFilePath()
+		config := GetConfig()
+		repositories := config["repositories"]
+		config["repositories"] = append(repositories[:index], repositories[index+1:]...)
+
+		newConfig, err := yaml.Marshal(&config)
+		if err != nil {
+			println(err.Error())
+		}
+
+		err = ioutil.WriteFile(config_file_path, newConfig, 0)
+
+		if err != nil {
+			println(err.Error())
+		} else {
+			println("Repository " + repositoryName + " has been deleted")
+		}
+	} else {
+		fmt.Println("Repository " + repositoryName + " does not exists")
 	}
 }

@@ -16,8 +16,6 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +25,10 @@ var createApplicationCmd = &cobra.Command{
 	Short: "Create an application",
 	Long:  `Create an application definition in a given repository`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("createApplication called")
+		// appName := args[0]
+		// repositoryName, _ = cmd.Flags().GetString("repository")
+		// propertiesFile, _ = cmd.Flags().GetString("properties")
+
 	},
 }
 

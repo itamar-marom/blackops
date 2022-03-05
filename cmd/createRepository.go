@@ -16,6 +16,8 @@ limitations under the License.
 package cmd
 
 import (
+	"net/url"
+
 	"github.com/itamar-marom/blackops/models"
 	"github.com/spf13/cobra"
 )
@@ -30,7 +32,13 @@ var createRepositoryCmd = &cobra.Command{
 		newRepository.Name = args[0]
 		newRepository.URL, _ = cmd.Flags().GetString("url")
 		newRepository.Token, _ = cmd.Flags().GetString("token")
-		models.AddNewRepository(*newRepository)
+
+		_, err := url.Parse(newRepository.URL)
+		if err != nil { // This should check the entire url scheme
+			println(err)
+		} else {
+			models.AddRepository(*newRepository)
+		}
 	},
 }
 
