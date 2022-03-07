@@ -16,8 +16,8 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/itamar-marom/blackops/models"
+	"github.com/itamar-marom/blackops/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +27,11 @@ var deleteApplicationCmd = &cobra.Command{
 	Short: "Delete an application",
 	Long:  `Delete an application definition from a given repository`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("deleteApplication called")
+		appName := args[0]
+		repositoryName, _ := cmd.Flags().GetString("repository")
+		repository, _, err := models.GetRepository(repositoryName)
+		utils.CheckError(err)
+		models.DeleteApplication(appName, repository)
 	},
 }
 

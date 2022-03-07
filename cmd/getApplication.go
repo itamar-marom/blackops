@@ -28,13 +28,14 @@ var getApplicationCmd = &cobra.Command{
 	Long:  `Get an application definition from a specific repository`,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		r, _, err := models.GetRepository("blackops-env")
+		repoName, _ := cmd.Flags().GetString("repository")
+		r, _, err := models.GetRepository(repoName)
 		utils.CheckError(err)
 
 		if len(args) == 0 {
-			models.GetApplications(r)
+			models.PrintApplications(r)
 		} else {
-			models.GetApplication(args[0], r)
+			models.PrintApplicationByName(args[0], r)
 		}
 	},
 }

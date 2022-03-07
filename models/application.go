@@ -14,48 +14,63 @@ type Application struct {
 	Properties string
 }
 
-func GetApplications(repository Repository) {
-	r, _, err := utils.CloneRepositoryInMemory(repository.Token, repository.URL)
-	utils.CheckError(err)
+func GetApplications(repository Repository) []Application {
+	r, _ := utils.CloneRepositoryInMemory(repository.Token, repository.URL)
 
 	w, err := r.Worktree()
 	utils.CheckError(err)
 
-	applications, err := w.Filesystem.ReadDir("applications")
+	applicationsDirectories, err := w.Filesystem.ReadDir("applications")
 	utils.CheckError(err)
 
-	for _, file := range applications {
-		println(file.Name())
+	applications := []Application{}
+
+	for _, file := range applicationsDirectories {
+		app := new(Application)
+		app.Name = file.Name()
+		app.Repository = repository.Name
+		app.Properties = ""
+		applications = append(applications, *app)
 	}
+
+	return applications
 }
 
-func GetApplication(appName string, repository Repository) {
-	r, _, err := utils.CloneRepositoryInMemory(repository.Token, repository.URL)
-	utils.CheckError(err)
+func GetApplication(appName string, repository Repository) (Application, int, error) {
+	applications := GetApplications(repository)
 
-	w, err := r.Worktree()
-	utils.CheckError(err)
-
-	applications, err := w.Filesystem.ReadDir("applications")
-	utils.CheckError(err)
-
-	isExists := false
-
-	for _, file := range applications {
-		if appName == file.Name() {
-			println(file.Name())
-			isExists = true
+	for index, app := range applications {
+		if appName == app.Name {
+			return app, index, nil
 		}
 	}
 
-	if !isExists {
-		fmt.Errorf("No such application " + appName + " in the given repository")
+	return Application{}, 0, fmt.Errorf("Application does not exists")
+}
+
+func PrintApplication(app Application) {
+	fmt.Println("Name: " + app.Name)
+	fmt.Println("Repository: " + app.Repository)
+	fmt.Println("Properties: " + app.Properties)
+}
+
+func PrintApplicationByName(appName string, repo Repository) {
+	app, _, err := GetApplication(appName, repo)
+	utils.CheckError(err)
+
+	PrintApplication(app)
+}
+
+func PrintApplications(repo Repository) {
+	applications := GetApplications(repo)
+
+	for _, app := range applications {
+		PrintApplication(app)
 	}
 }
 
 func CreateApplication(appName string, repository Repository, propertiesFilePath string) {
-	r, fs, err := utils.CloneRepositoryInMemory(repository.Token, repository.URL)
-	utils.CheckError(err)
+	r, fs := utils.CloneRepositoryInMemory(repository.Token, repository.URL)
 
 	propertiesData, err := os.ReadFile(propertiesFilePath)
 	utils.CheckError(err)
@@ -81,4 +96,23 @@ func CreateApplication(appName string, repository Repository, propertiesFilePath
 	utils.PushRepositoryInMemory(repository.Token, r)
 
 	fmt.Println("Created application: " + appName)
+}
+
+func DeleteApplication(appName string, repository Repository) {
+	r, fs := utils.CloneRepositoryInMemory(repository.Token, repository.URL)
+
+	appPath := "applications/" + appName
+
+	fs.Remove(appPath)
+
+	w, err := r.Worktree()
+	utils.CheckError(err)
+
+	w.Remove(appPath)
+
+	w.Commit("Deleted application: "+appName, &git.CommitOptions{})
+
+	utils.PushRepositoryInMemory(repository.Token, r)
+
+	fmt.Println("Deleted application: " + appName)
 }

@@ -8,47 +8,41 @@ import (
 	memory "github.com/go-git/go-git/v5/storage/memory"
 )
 
-func CloneRepositoryInMemory(password string, repository_url string) (*git.Repository, billy.Filesystem, error) {
+func authenticateRepositoryByBasic(repositoryToken string) *http.BasicAuth {
+	// Authentication
+	auth := &http.BasicAuth{
+		Username: "_",
+		Password: repositoryToken,
+	}
+
+	return auth
+}
+
+func CloneRepositoryInMemory(repositoryToken string, repositoryURL string) (*git.Repository, billy.Filesystem) {
 
 	// Filesystem abstraction based on memory
 	fs := memfs.New()
 	// Git objects storer based on memory
 	storer := memory.NewStorage()
 
-	// Authentication
-	auth := &http.BasicAuth{
-		Username: "_",
-		Password: password,
-		// Password: "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",
-	}
-
-	repository := repository_url
+	auth := authenticateRepositoryByBasic(repositoryToken)
 
 	r, err := git.Clone(storer, fs, &git.CloneOptions{
-		URL:  repository,
+		URL:  repositoryURL,
 		Auth: auth,
 	})
+	CheckError(err)
 
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return r, fs, nil
+	return r, fs
 }
 
-func PushRepositoryInMemory(password string, r *git.Repository) {
+func PushRepositoryInMemory(repositoryToken string, r *git.Repository) {
 
-	// Authentication
-	auth := &http.BasicAuth{
-		Username: "_",
-		Password: password,
-		// Password: "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",
-	}
+	auth := authenticateRepositoryByBasic(repositoryToken)
 
 	err := r.Push(&git.PushOptions{
 		RemoteName: "origin",
 		Auth:       auth,
 	})
-
 	CheckError(err)
 }

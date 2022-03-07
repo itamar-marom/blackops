@@ -19,6 +19,7 @@ import (
 	"net/url"
 
 	"github.com/itamar-marom/blackops/models"
+	"github.com/itamar-marom/blackops/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -34,11 +35,9 @@ var createRepositoryCmd = &cobra.Command{
 		newRepository.Token, _ = cmd.Flags().GetString("token")
 
 		_, err := url.Parse(newRepository.URL)
-		if err != nil { // This should check the entire url scheme
-			println(err)
-		} else {
-			models.AddRepository(*newRepository)
-		}
+		utils.CheckError(err)
+
+		models.CreateRepository(*newRepository)
 	},
 }
 

@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"github.com/itamar-marom/blackops/models"
+	"github.com/itamar-marom/blackops/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -26,12 +27,14 @@ var getRepositoryCmd = &cobra.Command{
 	Short: "Get a repository definition",
 	Long:  `Get a repository definition in cache -> ~/.blackops`,
 	Run: func(cmd *cobra.Command, args []string) {
-		repository, _, err := models.GetRepository(args[0])
-		if err != nil {
-			println(err.Error())
+
+		if len(args) == 0 {
+			models.PrintRepositories()
 		} else {
-			println("Name: " + repository.Name)
-			println("URL: " + repository.URL)
+			repository, _, err := models.GetRepository(args[0])
+			utils.CheckError(err)
+
+			models.PrintRepository(repository)
 		}
 	},
 }
