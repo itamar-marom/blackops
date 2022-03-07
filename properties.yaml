@@ -1,1 +1,7 @@
 test: properties
+try:
+  tab: yes
+list:
+  - l1: great
+    l12: gr
+  - l2: haha

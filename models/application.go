@@ -1,6 +1,7 @@
 package models
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 
@@ -14,22 +15,43 @@ type Application struct {
 	Properties string
 }
 
+func getApplicationProperties(filePath string, w *git.Worktree) string {
+	file, err := w.Filesystem.Open(filePath)
+	utils.CheckError(err)
+
+	scanner := bufio.NewScanner(file)
+
+	properties := ""
+
+	for scanner.Scan() {
+		properties = properties + "\n" + scanner.Text()
+	}
+
+	err = scanner.Err()
+	utils.CheckError(err)
+
+	return properties
+}
+
 func GetApplications(repository Repository) []Application {
 	r, _ := utils.CloneRepositoryInMemory(repository.Token, repository.URL)
 
 	w, err := r.Worktree()
 	utils.CheckError(err)
 
-	applicationsDirectories, err := w.Filesystem.ReadDir("applications")
+	applicationsDir := "applications"
+
+	applicationsDirectories, err := w.Filesystem.ReadDir(applicationsDir)
 	utils.CheckError(err)
 
 	applications := []Application{}
 
 	for _, file := range applicationsDirectories {
+		appPath := applicationsDir + "/" + file.Name() + "/properties.yaml"
 		app := new(Application)
 		app.Name = file.Name()
 		app.Repository = repository.Name
-		app.Properties = ""
+		app.Properties = getApplicationProperties(appPath, w)
 		applications = append(applications, *app)
 	}
 
@@ -51,7 +73,9 @@ func GetApplication(appName string, repository Repository) (Application, int, er
 func PrintApplication(app Application) {
 	fmt.Println("Name: " + app.Name)
 	fmt.Println("Repository: " + app.Repository)
-	fmt.Println("Properties: " + app.Properties)
+	fmt.Println("Properties:")
+	fmt.Println("----------" + app.Properties)
+	fmt.Println("==============================")
 }
 
 func PrintApplicationByName(appName string, repo Repository) {
@@ -64,7 +88,9 @@ func PrintApplicationByName(appName string, repo Repository) {
 func PrintApplications(repo Repository) {
 	applications := GetApplications(repo)
 
-	for _, app := range applications {
+	for index, app := range applications {
+		fmt.Print(index + 1)
+		fmt.Println(": ")
 		PrintApplication(app)
 	}
 }
