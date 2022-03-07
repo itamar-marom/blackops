@@ -53,7 +53,7 @@ func GetApplication(appName string, repository Repository) {
 	}
 }
 
-func CreateApplication(appName string, repository Repository, propertiesFilePath string) error {
+func CreateApplication(appName string, repository Repository, propertiesFilePath string) {
 	r, fs, err := utils.CloneRepositoryInMemory(repository.Token, repository.URL)
 	utils.CheckError(err)
 
