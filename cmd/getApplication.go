@@ -16,8 +16,8 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/itamar-marom/blackops/models"
+	"github.com/itamar-marom/blackops/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +27,15 @@ var getApplicationCmd = &cobra.Command{
 	Short: "Get an application",
 	Long:  `Get an application definition from a specific repository`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("getApplication called")
+
+		r, _, err := models.GetRepository("blackops-env")
+		utils.CheckError(err)
+
+		if len(args) == 0 {
+			models.GetApplications(r)
+		} else {
+			models.GetApplication(args[0], r)
+		}
 	},
 }
 

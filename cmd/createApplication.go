@@ -16,6 +16,8 @@ limitations under the License.
 package cmd
 
 import (
+	"github.com/itamar-marom/blackops/models"
+	"github.com/itamar-marom/blackops/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -25,10 +27,12 @@ var createApplicationCmd = &cobra.Command{
 	Short: "Create an application",
 	Long:  `Create an application definition in a given repository`,
 	Run: func(cmd *cobra.Command, args []string) {
-		// appName := args[0]
-		// repositoryName, _ = cmd.Flags().GetString("repository")
-		// propertiesFile, _ = cmd.Flags().GetString("properties")
-
+		appName := args[0]
+		repositoryName, _ := cmd.Flags().GetString("repository")
+		propertiesFilePath, _ := cmd.Flags().GetString("properties")
+		repository, _, err := models.GetRepository(repositoryName)
+		utils.CheckError(err)
+		models.CreateApplication(appName, repository, propertiesFilePath)
 	},
 }
 
